@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"reflect"
 )
 
 // Generic Resource and Controller
@@ -66,9 +67,19 @@ func handleQuery[In any, Out any](f TargetFunc[In, Out]) http.Handler {
 			return
 		}
 
-		values := r.Form
+		fmt.Println(r.PathValue("id"))
 
+		fmt.Println(reflect.TypeOf(in))
+
+		var zero [0]In
+		fmt.Println("zero", zero)
+		fmt.Println(reflect.TypeOf(zero))
+
+		fmt.Println(reflect.TypeFor[TargetFunc[In, Out]]().Name())
+
+		values := r.Form
 		for k, v := range values {
+			fmt.Println(k, v)
 		}
 
 		out, err := f(r.Context(), in)
